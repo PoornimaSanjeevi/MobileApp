@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="16" />
@@ -24,7 +25,30 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUPActivity"/>
+        <activity android:name=".PromptSecActivity"/>
 
+
+        <receiver android:name=".receivers.PeriodicTaskReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receivers.PeriodicTaskReceiver2">
+            <intent-filter>
+                <action android:name="android.intent.action.AIRPLANE_MODE" />
+            </intent-filter>
+        </receiver>
+
+        <!--<receiver android:name=".receivers.BootAndUpdateReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MY_PACKAGE_REPLACED" />-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <!--<service android:name=".services.BackgroundService" />-->
     </application>
 
 </manifest>

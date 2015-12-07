@@ -6,4 +6,10 @@
         android:enabled="false"
         />
 
+    <!--<item-->
+        <!--android:id="@+id/start_service"-->
+        <!--android:title="Start Monitoring"-->
+        <!--android:enabled="true"-->
+        <!--/>-->
+
 </menu>

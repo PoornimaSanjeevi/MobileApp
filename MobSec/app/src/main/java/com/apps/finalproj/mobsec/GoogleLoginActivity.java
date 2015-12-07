@@ -1,10 +1,13 @@
 package com.apps.finalproj.mobsec;
+
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -40,7 +43,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements
     String currentAccount;
     String name;
     protected static final String ACCOUNTNAME = "AccountName";
-    protected static final String EMAIL = "Email";
+    public static final String EMAIL = "Email";
 
 
     private static final String TAG = "GoogleLoginActivity";
@@ -68,6 +71,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements
     /* Should we automatically resolve ConnectionResults when possible? */
     private boolean mShouldResolve = false;
     private MenuItem profileMenu;
+//    private MenuItem startServiceMenu;
     // [END resolution_variables]
 
     @Override
@@ -138,6 +142,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             profileMenu.setEnabled(true);
+//            startServiceMenu.setEnabled(true);
         } else {
             // Show signed-out message and clear email field
             mStatus.setText(R.string.signed_out);
@@ -147,7 +152,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements
             findViewById(R.id.sign_in_button).setEnabled(true);
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
-           profileMenu.setEnabled(false);
+            profileMenu.setEnabled(false);
+//            startServiceMenu.setEnabled(false);
         }
     }
 
@@ -155,9 +161,10 @@ public class GoogleLoginActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main,menu);
+        inflater.inflate(R.menu.menu_main, menu);
         boolean resultMenu = super.onCreateOptionsMenu(menu);
         profileMenu = menu.findItem(R.id.action_profile);
+//        startServiceMenu = menu.findItem(÷R.id.start_service);
         return resultMenu;
     }
 
@@ -168,6 +175,19 @@ public class GoogleLoginActivity extends AppCompatActivity implements
             case R.id.action_profile:
                 displayProfile();
                 return true;
+//            case R.id.start_service:
+//                PromptSecCallback cb = new PromptSecCallback() {
+//                    @Override
+//                    public void call(boolean res) {
+//                        if (res) {
+//                            Toast.makeText(GoogleLoginActivity.this, "Authenticated!", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(GoogleLoginActivity.this, "Incorrect Password", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                };
+//                PromptSecKey ps = new PromptSecKey(currentAccount, this, cb);
+//                ps.authenticate();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -176,8 +196,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements
     private void displayProfile() {
 
         Intent intent = new Intent(this, SignUPActivity.class);
-        intent.putExtra(ACCOUNTNAME,name);
-        intent.putExtra(EMAIL,currentAccount);
+        intent.putExtra(ACCOUNTNAME, name);
+        intent.putExtra(EMAIL, currentAccount);
         startActivity(intent);
 
         Toast.makeText(GoogleLoginActivity.this, "Profile User", Toast.LENGTH_SHORT).show();
@@ -186,6 +206,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements
 
     /**
      * Check if we have the GET_ACCOUNTS permission and request it if we do not.
+     *
      * @return true if we have the permission, false if we do not.
      */
     private boolean checkAccountsPermission() {
